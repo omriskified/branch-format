@@ -2,30 +2,32 @@
     <head>
         <title>BranchFormat</title>
         <script type="text/javascript">
-        
+
         function FormatBranch()
         {
             var txt = document.getElementById("txt");
-            ShowResult(DoBranchFormat(txt.value));        
+            ShowResult(DoBranchFormat(txt.value));
         }
         function FormatPR()
         {
             ToggleDiv(false);
             var txt = document.getElementById("txt");
-            var res = DoPRFormat(txt.value);
+            var repo = document.getElementById("repo");
+            var repository = repo.options[repo.selectedIndex].text;
+            var res = DoPRFormat(txt.value, repository);
             if(!res)
                 alert("Invalid input");
             else
-                ShowResult(res);        
+                ShowResult(res);
         }
         function ShowResult (val)
-        { 
-            ToggleDiv(false);           
+        {
+            ToggleDiv(false);
             var res = document.getElementById("res");
             res.value = val;
             ToggleDiv(true);
             res.select();
-            document.execCommand('copy'); 
+            document.execCommand('copy');
         }
 
         function DoBranchFormat(txt)
@@ -34,20 +36,20 @@
             var ret = txt.toLowerCase();
 
             if(matches && matches.length == 3)
-                ret = matches[1] + "-" + matches[2].trimStart().trimEnd().toLowerCase();                
+                ret = matches[1] + "-" + matches[2].trimStart().trimEnd().toLowerCase();
 
             return ret.replace(/\ba\b|\bthe\b|\and\b|\bit\b|\bthem\b|\bof\b/gi,"").replace(/[\s\/]/g,"-").replace(/[^a-zA-Z0-9-]/g,"").replace(/(-+)/g,"-");
         }
 
-        function DoPRFormat(txt)
+        function DoPRFormat(txt, repository)
         {
             var matches = txt.match(/(^.+)(#)(\d+$)/);
             var ret = null;
 
             if(matches && matches.length == 4)
-                ret = "PR - " + matches[1].trimStart().trimEnd() + "\r\nhttps://github.com/Riskified/shopify_app/pull/" + matches[3];     
+                ret = `PR -  ${matches[1].trimStart().trimEnd()}\r\nhttps://github.com/Riskified/${repository}/pull/${matches[3]}`;
 
-            return ret;           
+            return ret;
         }
 
         function ToggleDiv(visible)
@@ -55,7 +57,7 @@
             res = document.getElementById("res-div");
             res.className = "res-"+ (visible ? "visible":"hidden");
         }
-        </script> 
+        </script>
         <style>
             label {font: 400 11px system-ui}
             .res-hidden {visibility: hidden;}
@@ -66,13 +68,19 @@
     <body>
         <div>
             <input type="text" id="txt" size="75%">
-            <button onclick="FormatBranch()">Format Branch</button> 
-            <button onclick="FormatPR()">Format PR</button>  
+            <button onclick="FormatBranch()">Format Branch</button>
+            <button onclick="FormatPR()">Format PR</button>
+            <select id="repo">
+                <option selected>shopify_app</option>
+                <option>ng-admin</option>
+                <option>cockpit</option>
+                <option>webapp</option>
+            </select>
         </div>
         <div id="res-div" class="res-hidden">
             <textarea rows="2" id="res"></textarea>
-            <label id="lbl">Copied to clipboard</label>  
+            <label id="lbl">Copied to clipboard</label>
         </div>
-    
+
 </body>
 </html>
