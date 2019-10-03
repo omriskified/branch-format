@@ -28,14 +28,13 @@
             var res = document.getElementById("res");
             res.value = val;
             ToggleDiv(true);
-            res.select();
-            document.execCommand('copy');
+            CopyToClipboard(res);
         }
 
         function DoBranchFormat(txt)
         {
             var matches = txt.match(/(^\w{2,5}-\d+)(.+)/);
-            var ret = txt.toLowerCase();
+            var ret = txt.toLowerCase().replace('copy the link to this issue', '');
 
             if(matches && matches.length == 3)
                 ret = matches[1] + "-" + matches[2].trimStart().trimEnd().toLowerCase();
@@ -59,6 +58,14 @@
             res = document.getElementById("res-div");
             res.className = "res-"+ (visible ? "visible":"hidden");
         }
+
+        function CopyToClipboard(res) 
+        {
+            res = res || document.getElementById("res");
+            res.select();
+            document.execCommand('copy');
+            document.getElementById("lblCopied").className = "res-visible";            
+        }
         </script>
         <style>
             label {font: 400 11px system-ui}
@@ -79,11 +86,13 @@
                 <option>webapp</option>
                 <option>toolbox</option>
                 <option>toolbox-ui</option>
+                <option>tag-service</option>
             </select>
         </div>
         <div id="res-div" class="res-hidden">
             <textarea rows="2" id="res"></textarea>
-            <label id="lbl">Copied to clipboard</label>
+            <button onclick="CopyToClipboard()">Copy To Clipboard</button>
+            <label id="lblCopied" class="res-hidden">Copied to clipboard</label>
         </div>
 
 </body>
