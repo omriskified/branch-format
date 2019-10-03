@@ -33,8 +33,9 @@
 
         function DoBranchFormat(txt)
         {
+            txt = txt.replace('Copy the link to this issue', '');
             var matches = txt.match(/(^\w{2,5}-\d+)(.+)/);
-            var ret = txt.toLowerCase().replace('copy the link to this issue', '');
+            var ret = txt.toLowerCase();
 
             if(matches && matches.length == 3)
                 ret = matches[1] + "-" + matches[2].trimStart().trimEnd().toLowerCase();
