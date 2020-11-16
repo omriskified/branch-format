@@ -40,7 +40,7 @@
             if(matches && matches.length == 3)
                 ret = matches[1] + "-" + matches[2].trimStart().trimEnd().toLowerCase();
 
-            return ret.replace(/\ba\b|\bthe\b|\and\b|\bit\b|\bthem\b|\bof\b/gi,"").replace(/[\s\/]/g,"-").replace(/[^a-zA-Z0-9-]/g,"").replace(/(-+)/g,"-");
+            return ret.replace(/\ba\b|\bthe\b|\and\b|\bit\b|\bthem\b|\bof\b/gi,"").replace(/[\s\/\_]/g,"-").replace(/[^a-zA-Z0-9-]/g,"").replace(/(-+)/g,"-");
         }
 
         function DoPRFormat(txt, repository)
@@ -89,6 +89,8 @@
                 <option>toolbox-ui</option>
                 <option>tag-service</option>
                 <option>screen-saver-service</option>
+                <option>second-look-service</option>
+                <option>analysis-configuration-server</option>
             </select>
         </div>
         <div id="res-div" class="res-hidden">
